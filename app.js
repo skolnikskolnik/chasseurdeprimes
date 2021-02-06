@@ -14,6 +14,179 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+
+//All classes need name, id, and email
+const promptUser = async () => {
+    try {
+        //Make an object for each team member depending on what class it is
+        const answers = await inquirer.prompt([
+            {
+                type: 'list',
+                message: 'What is the role of this employee?',
+                name: 'role',
+                choices: ["Employee", "Engineer", "Intern", "Manager"]
+            }
+
+        ]).then(function (answer) {
+            if (answer.role == "Manager") {
+                //Manager needs office number
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'What is the name of the employee?',
+                            name: 'name'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's id number?",
+                            name: 'id'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's email address?",
+                            name: 'email'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the manager's office number?",
+                            name: 'officenumber'
+                        }
+                    ]).then(answer => {
+
+                        //Need to make the appropriately structured object
+                        let newEmployee = {
+                            name: answer.name,
+                            id: answer.id,
+                            email: answer.email,
+                            officeNumber: answer.officenumber,
+                            role: "Manager"
+                        }
+
+                        startOver();
+                    })
+            } else if (answer.role == "Engineer") {
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'What is the name of the employee?',
+                            name: 'name'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's id number?",
+                            name: 'id'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's email address?",
+                            name: 'email'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the engineer's github username?",
+                            name: 'github_username'
+                        }
+                    ]).then(function (answer) {
+                        //Engineer also needs github username
+                        let newEmployee = {
+                            name: answer.name,
+                            id: answer.id,
+                            email: answer.email,
+                            github: answer.github_username
+                        }
+
+                        startOver();
+                    })
+            } else if (answer.role == "Intern") {
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'What is the name of the employee?',
+                            name: 'name'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's id number?",
+                            name: 'id'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's email address?",
+                            name: 'email'
+                        },
+                        {
+                            type: 'input',
+                            message: "What school does the intern attend?",
+                            name: 'school'
+                        }
+                    ]).then(answer => {
+                        let newEmployee = {
+                            name: answer.name,
+                            id: answer.id,
+                            email: answer.email,
+                            school: answer.school
+                        }
+
+                        startOver();
+                    })
+            } else {
+                //Goes in as employee - no additional info needed
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'What is the name of the employee?',
+                            name: 'name'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's id number?",
+                            name: 'id'
+                        },
+                        {
+                            type: 'input',
+                            message: "What is the employee's email address?",
+                            name: 'email'
+                        }
+                    ]).then(answer => {
+                        let newEmployee = {
+                            name: answer.name,
+                            id: answer.id,
+                            email: answer.email,
+                        }
+
+                        startOver();
+                    })
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+promptUser();
+
+const startOver = () => {
+    inquirer
+        .prompt([
+        {
+            type: 'list',
+            message: 'Do you want to add another employee?',
+            name: "yesno",
+            choices: ["yes", "no"]
+        }
+    ]).then(answer => {
+        if (answer.yesno == "yes") {
+            promptUser();
+        } else {
+            return false;
+        }
+    })
+}
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
