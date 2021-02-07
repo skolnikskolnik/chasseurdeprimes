@@ -1,6 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -13,7 +14,7 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-
+const employeeArray = [];
 
 //All classes need name, id, and email
 const promptUser = async () => {
@@ -53,17 +54,14 @@ const promptUser = async () => {
                             name: 'officenumber'
                         }
                     ]).then(answer => {
+                        //nneed to make use of the manager function
 
                         //Need to make the appropriately structured object
-                        let newEmployee = {
-                            name: answer.name,
-                            id: answer.id,
-                            email: answer.email,
-                            officeNumber: answer.officenumber,
-                            role: "Manager"
-                        }
+                        let newEmployee = new Manager(answer.name, answer.id, answer.email, answer.officeNumber);
 
-                        startOver();
+                        employeeArray.push(newEmployee);
+
+                        startOver(employeeArray);
                     })
             } else if (answer.role == "Engineer") {
                 inquirer
@@ -90,14 +88,10 @@ const promptUser = async () => {
                         }
                     ]).then(function (answer) {
                         //Engineer also needs github username
-                        let newEmployee = {
-                            name: answer.name,
-                            id: answer.id,
-                            email: answer.email,
-                            github: answer.github_username
-                        }
+                        let newEmployee = new Engineer(answer.name, answer.id, answer.email, answer.github_username);
+                        employeeArray.push(newEmployee);
 
-                        startOver();
+                        startOver(employeeArray);
                     })
             } else if (answer.role == "Intern") {
                 inquirer
@@ -123,14 +117,12 @@ const promptUser = async () => {
                             name: 'school'
                         }
                     ]).then(answer => {
-                        let newEmployee = {
-                            name: answer.name,
-                            id: answer.id,
-                            email: answer.email,
-                            school: answer.school
-                        }
 
-                        startOver();
+                        let newEmployee = new Intern(answer.name, answer.id, answer.email, answer.school);
+
+                        employeeArray.push(newEmployee);
+
+                        startOver(employeeArray);
                     })
             } else {
                 //Goes in as employee - no additional info needed
@@ -152,13 +144,12 @@ const promptUser = async () => {
                             name: 'email'
                         }
                     ]).then(answer => {
-                        let newEmployee = {
-                            name: answer.name,
-                            id: answer.id,
-                            email: answer.email,
-                        }
 
-                        startOver();
+                        let newEmployee = new Employee(answer.name, answer.id, answer.email);
+
+                        employeeArray.push(newEmployee);
+
+                        startOver(employeeArray);
                     })
             }
         });
@@ -169,20 +160,21 @@ const promptUser = async () => {
 
 promptUser();
 
-const startOver = () => {
+
+const startOver = array => {
     inquirer
         .prompt([
         {
             type: 'list',
             message: 'Do you want to add another employee?',
             name: "yesno",
-            choices: ["yes", "no"]
+            choices: ["yes", "no"],
         }
     ]).then(answer => {
         if (answer.yesno == "yes") {
             promptUser();
         } else {
-            return false;
+            render(array);
         }
     })
 }
