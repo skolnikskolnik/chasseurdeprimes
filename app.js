@@ -41,12 +41,25 @@ const promptUser = async () => {
                         {
                             type: 'input',
                             message: "What is the employee's id number?",
-                            name: 'id'
+                            name: 'id',
+                            //Verify that it is a number
+                            validate: function(value) {
+                                if (isNaN(value) === false) {
+                                  return true;
+                                }
+                                return false;
+                              }
                         },
                         {
                             type: 'input',
                             message: "What is the employee's email address?",
-                            name: 'email'
+                            name: 'email',
+                            validate: function(value){
+                                if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)){
+                                    return true;
+                                }
+                                return false;
+                            }
                         },
                         {
                             type: 'input',
@@ -74,12 +87,24 @@ const promptUser = async () => {
                         {
                             type: 'input',
                             message: "What is the employee's id number?",
-                            name: 'id'
+                            name: 'id',
+                            validate: function(value) {
+                                if (isNaN(value) === false) {
+                                  return true;
+                                }
+                                return false;
+                              }
                         },
                         {
                             type: 'input',
                             message: "What is the employee's email address?",
-                            name: 'email'
+                            name: 'email',
+                            validate: function(value){
+                                if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)){
+                                    return true;
+                                }
+                                return false;
+                            }
                         },
                         {
                             type: 'input',
@@ -104,12 +129,24 @@ const promptUser = async () => {
                         {
                             type: 'input',
                             message: "What is the employee's id number?",
-                            name: 'id'
+                            name: 'id',
+                            validate: function(value) {
+                                if (isNaN(value) === false) {
+                                  return true;
+                                }
+                                return false;
+                              }
                         },
                         {
                             type: 'input',
                             message: "What is the employee's email address?",
-                            name: 'email'
+                            name: 'email',
+                            validate: function(value){
+                                if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)){
+                                    return true;
+                                }
+                                return false;
+                            }
                         },
                         {
                             type: 'input',
@@ -136,12 +173,24 @@ const promptUser = async () => {
                         {
                             type: 'input',
                             message: "What is the employee's id number?",
-                            name: 'id'
+                            name: 'id',
+                            validate: function(value) {
+                                if (isNaN(value) === false) {
+                                  return true;
+                                }
+                                return false;
+                              }
                         },
                         {
                             type: 'input',
                             message: "What is the employee's email address?",
-                            name: 'email'
+                            name: 'email',
+                            validate: function(value){
+                                if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)){
+                                    return true;
+                                }
+                                return false;
+                            }
                         }
                     ]).then(answer => {
 
@@ -164,20 +213,21 @@ promptUser();
 const startOver = array => {
     inquirer
         .prompt([
-        {
-            type: 'list',
-            message: 'Do you want to add another employee?',
-            name: "yesno",
-            choices: ["yes", "no"],
-        }
-    ]).then(answer => {
-        if (answer.yesno == "yes") {
-            promptUser();
-        } else {
-            render(array);
-        }
-    })
+            {
+                type: 'list',
+                message: 'Do you want to add another employee?',
+                name: "yesno",
+                choices: ["yes", "no"],
+            }
+        ]).then(answer => {
+            if (answer.yesno == "yes") {
+                promptUser();
+            } else {
+                render(array);
+            }
+        })
 }
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
