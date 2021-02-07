@@ -25,7 +25,7 @@ const promptUser = async () => {
                 type: 'list',
                 message: 'What is the role of this employee?',
                 name: 'role',
-                choices: ["Employee", "Engineer", "Intern", "Manager"]
+                choices: ["Engineer", "Intern", "Manager"]
             }
 
         ]).then(function (answer) {
@@ -64,17 +64,20 @@ const promptUser = async () => {
                         {
                             type: 'input',
                             message: "What is the manager's office number?",
-                            name: 'officenumber'
+                            name: 'officenumber',
+                            validate: function(value) {
+                                if (isNaN(value) === false) {
+                                  return true;
+                                }
+                                return false;
+                              }
                         }
                     ]).then(answer => {
-                        //nneed to make use of the manager function
 
-                        //Need to make the appropriately structured object
                         let newEmployee = new Manager(answer.name, answer.id, answer.email, answer.officeNumber);
-
                         employeeArray.push(newEmployee);
-
                         startOver(employeeArray);
+
                     })
             } else if (answer.role == "Engineer") {
                 inquirer
@@ -118,7 +121,7 @@ const promptUser = async () => {
 
                         startOver(employeeArray);
                     })
-            } else if (answer.role == "Intern") {
+            } else  {
                 inquirer
                     .prompt([
                         {
@@ -160,46 +163,7 @@ const promptUser = async () => {
                         employeeArray.push(newEmployee);
 
                         startOver(employeeArray);
-                    })
-            } else {
-                //Goes in as employee - no additional info needed
-                inquirer
-                    .prompt([
-                        {
-                            type: 'input',
-                            message: 'What is the name of the employee?',
-                            name: 'name'
-                        },
-                        {
-                            type: 'input',
-                            message: "What is the employee's id number?",
-                            name: 'id',
-                            validate: function(value) {
-                                if (isNaN(value) === false) {
-                                  return true;
-                                }
-                                return false;
-                              }
-                        },
-                        {
-                            type: 'input',
-                            message: "What is the employee's email address?",
-                            name: 'email',
-                            validate: function(value){
-                                if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)){
-                                    return true;
-                                }
-                                return false;
-                            }
-                        }
-                    ]).then(answer => {
-
-                        let newEmployee = new Employee(answer.name, answer.id, answer.email);
-
-                        employeeArray.push(newEmployee);
-
-                        startOver(employeeArray);
-                    })
+                    });
             }
         });
     } catch (err) {
